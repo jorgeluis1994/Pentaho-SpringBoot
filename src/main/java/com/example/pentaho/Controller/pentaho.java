@@ -1,6 +1,8 @@
 package com.example.pentaho.Controller;
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.exception.KettleException;
+import org.pentaho.di.job.Job;
+import org.pentaho.di.job.JobMeta;
 import org.pentaho.di.trans.Trans;
 import org.pentaho.di.trans.TransMeta;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,42 @@ public class pentaho {
         }
     }
 
+     @PostMapping("/executeJob")
+    public String executeJob() {
+        try {
+            // Inicializar el entorno de Kettle
+            KettleEnvironment.init();
 
+            // Cargar el archivo de job desde la carpeta resources
+            Resource resource = resourceLoader.getResource("classpath:archivo.job");
+
+            // Obtener la ruta absoluta del archivo de job
+            String jobFilePath = resource.getFile().getAbsolutePath();
+
+            // Crear un objeto JobMeta para cargar el archivo de job
+            JobMeta jobMeta = new JobMeta(jobFilePath, null);
+
+            // Crear una instancia de Job con el objeto JobMeta
+            Job job = new Job(null, jobMeta);
+
+            // Iniciar la ejecución del job
+            job.start();
+            job.waitUntilFinished();
+
+            // Verificar si hubo errores durante la ejecución del job
+            if (job.getErrors() == 0) {
+                return "Job ejecutado con éxito";
+            } else {
+                return "Error al ejecutar el job";
+            }
+        } catch (KettleException e) {
+            e.printStackTrace();
+            return "Error al ejecutar el job: " + e.getMessage();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "Error al cargar el archivo de job: " + ex.getMessage();
+        }
+    }
    }
     
 
