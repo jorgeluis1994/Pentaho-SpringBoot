@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.11</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>pentaho</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>pentaho</name>
+    <description>Demo project for Spring Boot</description>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+    <dependencies>
+        <!-- Dependencias de tu proyecto -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Pentaho Kettle Core -->
+		<dependency>
+			<groupId>pentaho-kettle</groupId>
+			<artifactId>kettle-core</artifactId>
+			<version> 9.0.0.0-423</version>
+		</dependency>
+		<!-- Pentaho Kettle Engine -->
+		<dependency>
+			<groupId>pentaho-kettle</groupId>
+			<artifactId>kettle-engine</artifactId>
+			<version>9.0.0.0-423</version>
+		</dependency>
+		<!-- Pentaho Data Integration Core Plugins Implementation -->
+		<dependency>      
+			<groupId>org.pentaho.di.plugins</groupId>
+			<artifactId>pdi-core-plugins-impl</artifactId>
+			<version>9.0.0.0-423</version>
+		</dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <!-- Plugins de construcción -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
+                    </image>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+	<profiles>
+		<profile>
+		  <id>pentaho</id>
+		  <activation>
+			<activeByDefault>true</activeByDefault>
+		  </activation>
+		  <repositories>
+			<repository>
+			  <id>pentaho-public</id>
+			  <name>Pentaho Public</name>
+			  <url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
+			  <releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			  </releases>
+			  <snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			  </snapshots>
+			</repository>
+		  </repositories>
+		  <pluginRepositories>
+			<pluginRepository>
+			  <id>pentaho-public</id>
+			  <name>Pentaho Public</name>
+			  <url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
+			  <releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			  </releases>
+			  <snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			  </snapshots>
+			</pluginRepository>
+		  </pluginRepositories>
+		</profile>
+	  </profiles>
+</project>
