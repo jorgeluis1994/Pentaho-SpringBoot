@@ -54,20 +54,6 @@
 			<version>9.0.0.0-423</version>
 		</dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <!-- Plugins de construcción -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <image>
-                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
-                    </image>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 	<profiles>
 		<profile>
 		  <id>pentaho</id>
@@ -106,4 +92,19 @@
 		  </pluginRepositories>
 		</profile>
 	  </profiles>
+    <build>
+        <plugins>
+            <!-- Plugins de construcción -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
+                    </image>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+	
 </project>
