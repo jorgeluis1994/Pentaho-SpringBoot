@@ -1,4 +1,7 @@
 package com.example.pentaho.Controller;
+import java.io.File;
+
+import org.apache.commons.discovery.tools.ResourceUtils;
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.exception.KettleException;
 import org.pentaho.di.job.Job;
@@ -20,25 +23,29 @@ public class pentaho {
     @PostMapping("/executeKtr")
     public String executeKtr() {
         try {
-            // Inicializar el entorno de Kettle
             KettleEnvironment.init();
+        
+            // Obtener la ruta del directorio src/main/resources
+            Resource resource1 = resourceLoader.getResource("classpath:");
+            File resourcesDirectory = resource1.getFile();
+            String resourcesPath = resourcesDirectory.getAbsolutePath();
 
             // Cargar el archivo KTR desde la carpeta resources
             Resource resource = resourceLoader.getResource("classpath:forms.ktr");
 
-            // Crear un objeto TransMeta para cargar el archivo KTR
             TransMeta transMeta = new TransMeta(resource.getInputStream(), null, true, null, null);
-
-            // Crear una instancia de Trans con el objeto TransMeta
             Trans trans = new Trans(transMeta);
 
+            // Establecer el directorio de salida para la transformación KTR
+            trans.setParameterValue("output_directory", resourcesPath);
+    
             // Ejecutar la transformación
             trans.execute(null);
             trans.waitUntilFinished();
 
             // Verificar si la transformación se ejecutó correctamente
             if (trans.getErrors() == 0) {
-                return "Transformación KTR ejecutada con éxito";
+                return "Transformación KTR ejecutada con éxito en: " + resourcesPath;
             } else {
                 return "Error al ejecutar la transformación KTR";
             }
